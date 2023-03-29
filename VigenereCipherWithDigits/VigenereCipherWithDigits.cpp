@@ -30,7 +30,7 @@ int main()
         return 1;
     }
 
-    ofstream output_file("encrypted.txt");
+    ofstream output_file("output.txt");
     if (!output_file) {
         cout << "Failed to open encrypted file." << endl;
         return 1;
@@ -93,7 +93,8 @@ string Vigenere_cipher_encrypt(string text, string key)
     {
         int positionKey = position(key[i % key.size()]);
         int positionText = position(text[i]);
-        result += Alphabet[(positionText + positionKey) % Alphabet_Size];
+        int positionEncrypted = positionText + positionKey;
+        result += Alphabet[(positionEncrypted) % Alphabet_Size];
     }
     return result;
 }
@@ -102,9 +103,21 @@ string Vigenere_cipher_decrypt(string text, string key)
     string result = "";
     for (int i = 0; i < text.size(); i++)
     {
-        int positionKey = position(key[i % key.size()]);
-        int positionText = position(text[i]);
-        result += Alphabet[-(positionText + positionKey) % Alphabet_Size];
+        string result = "";
+        for (int i = 0; i < text.size(); i++)
+        {
+            int positionKey = position(key[i % key.size()]);
+            int positionText = position(text[i]);
+
+            int positionDecrypted = positionText - positionKey;
+            if (positionDecrypted < 0)
+            {
+                positionDecrypted += Alphabet_Size;
+            }
+
+            result += Alphabet[positionDecrypted % Alphabet_Size];
+        }
+        return result;
     }
     return result;
 }
