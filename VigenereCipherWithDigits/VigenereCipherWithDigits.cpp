@@ -8,11 +8,13 @@
 #include <string>
 const char Alphabet[] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9' };
 const int Alphabet_Size = sizeof(Alphabet) / sizeof(Alphabet[0]);
+const char Alphab[] = { 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z' };
+const int alphab_Size= sizeof(Alphab) / sizeof(Alphab[0]);
 using namespace std;
 
 int position(char character);
 
-string Vigenere_cipher(string text, string key);
+string Vigenere_cipher_encrypt(string text, string key);
 
 int main()
 {
@@ -40,7 +42,7 @@ int main()
         cin >> key;
         while (getline(input_file, text)) {
 
-            string encrypted_line = Vigenere_cipher(text, key);
+            string encrypted_line = Vigenere_cipher_encrypt(text, key);
             output_file << encrypted_line << endl;
 
         }
@@ -52,7 +54,7 @@ int main()
         cin >> key;
         while (getline(input_file, text)) {
 
-            string encrypted_line = Vigenere_cipher(text, key);
+            string encrypted_line = Vigenere_cipher_decrypt(text, key);
             output_file << encrypted_line << endl;
 
         }
@@ -76,13 +78,13 @@ int position(char character)
 {
     for (int i = 0; i < Alphabet_Size; i++)
     {
-        if (Alphabet[i] == character)
+        if (Alphabet[i] == character || Alphab[i]==character)
         {
             return i;
         }
     }
 }
-string Vigenere_cipher(string text, string key)
+string Vigenere_cipher_encrypt(string text, string key)
 {
     string result = "";
     for (int i = 0; i < text.size(); i++)
@@ -90,6 +92,17 @@ string Vigenere_cipher(string text, string key)
         int positionKey = position(key[i % key.size()]);
         int positionText = position(text[i]);
         result += Alphabet[(positionText + positionKey) % Alphabet_Size];
+    }
+    return result;
+}
+string Vigenere_cipher_decrypt(string text, string key)
+{
+    string result = "";
+    for (int i = 0; i < text.size(); i++)
+    {
+        int positionKey = position(key[i % key.size()]);
+        int positionText = position(text[i]);
+        result += Alphabet[-(positionText + positionKey) % Alphabet_Size];
     }
     return result;
 }
