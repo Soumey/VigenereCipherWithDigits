@@ -15,6 +15,8 @@ using namespace std;
 int position(char character);
 
 string Vigenere_cipher_encrypt(string text, string key);
+string Vigenere_cipher_decrypt(string text, string key);
+
 
 int main()
 {
